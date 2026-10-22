@@ -1,0 +1,1722 @@
+{
+  "method": "Read existing checkpoints, CSV logs, YAML configurations and local labels; no training or dataset evaluation was performed.",
+  "inspection_environment": {
+    "torch": "2.14.1",
+    "ultralytics": "8.4.95"
+  },
+  "models": {
+    "ppe": {
+      "path": "hierarchical-lab-safety-monitor/labguard/models/ppe_best.pt",
+      "size_bytes": 5478568,
+      "sha256": "66ccf33a2a0999d2441bfbdfc67cc1969e33c712b37d59889d0cb7cd1a2a70df",
+      "matching_training_weights": [
+        {
+          "path": "AIVision程序/pic/person_train/weights/best.pt",
+          "matches_final_sha256": true
+        },
+        {
+          "path": "AIVision程序/person/model_code/train/weights/best.pt",
+          "matches_final_sha256": true
+        }
+      ],
+      "checkpoint_version": "8.3.82",
+      "checkpoint_date": "2026-03-24T13:04:16.117383",
+      "checkpoint_epoch": -1,
+      "parameter_count": 2592180,
+      "tensor_dtypes": [
+        "torch.float16"
+      ],
+      "model_type": "DetectionModel",
+      "names": {
+        "0": "Drinking",
+        "1": "Eating",
+        "2": "Gloves",
+        "3": "Googles",
+        "4": "Head Mask",
+        "5": "Lab Coat",
+        "6": "Mask",
+        "7": "No Gloves",
+        "8": "No Head Mask",
+        "9": "No Lab coat",
+        "10": "No Mask",
+        "11": "No googles"
+      },
+      "model_yaml": {
+        "nc": 12,
+        "scales": {
+          "n": [
+            0.5,
+            0.25,
+            1024
+          ],
+          "s": [
+            0.5,
+            0.5,
+            1024
+          ],
+          "m": [
+            0.5,
+            1.0,
+            512
+          ],
+          "l": [
+            1.0,
+            1.0,
+            512
+          ],
+          "x": [
+            1.0,
+            1.5,
+            512
+          ]
+        },
+        "backbone": [
+          [
+            -1,
+            1,
+            "Conv",
+            [
+              64,
+              3,
+              2
+            ]
+          ],
+          [
+            -1,
+            1,
+            "Conv",
+            [
+              128,
+              3,
+              2
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C3k2",
+            [
+              256,
+              false,
+              0.25
+            ]
+          ],
+          [
+            -1,
+            1,
+            "Conv",
+            [
+              256,
+              3,
+              2
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C3k2",
+            [
+              512,
+              false,
+              0.25
+            ]
+          ],
+          [
+            -1,
+            1,
+            "Conv",
+            [
+              512,
+              3,
+              2
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C3k2",
+            [
+              512,
+              true
+            ]
+          ],
+          [
+            -1,
+            1,
+            "Conv",
+            [
+              1024,
+              3,
+              2
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C3k2",
+            [
+              1024,
+              true
+            ]
+          ],
+          [
+            -1,
+            1,
+            "SPPF",
+            [
+              1024,
+              5
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C2PSA",
+            [
+              1024
+            ]
+          ]
+        ],
+        "head": [
+          [
+            -1,
+            1,
+            "nn.Upsample",
+            [
+              "None",
+              2,
+              "nearest"
+            ]
+          ],
+          [
+            [
+              -1,
+              6
+            ],
+            1,
+            "Concat",
+            [
+              1
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C3k2",
+            [
+              512,
+              false
+            ]
+          ],
+          [
+            -1,
+            1,
+            "nn.Upsample",
+            [
+              "None",
+              2,
+              "nearest"
+            ]
+          ],
+          [
+            [
+              -1,
+              4
+            ],
+            1,
+            "Concat",
+            [
+              1
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C3k2",
+            [
+              256,
+              false
+            ]
+          ],
+          [
+            -1,
+            1,
+            "Conv",
+            [
+              256,
+              3,
+              2
+            ]
+          ],
+          [
+            [
+              -1,
+              13
+            ],
+            1,
+            "Concat",
+            [
+              1
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C3k2",
+            [
+              512,
+              false
+            ]
+          ],
+          [
+            -1,
+            1,
+            "Conv",
+            [
+              512,
+              3,
+              2
+            ]
+          ],
+          [
+            [
+              -1,
+              10
+            ],
+            1,
+            "Concat",
+            [
+              1
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C3k2",
+            [
+              1024,
+              true
+            ]
+          ],
+          [
+            [
+              16,
+              19,
+              22
+            ],
+            1,
+            "Detect",
+            [
+              "nc"
+            ]
+          ]
+        ],
+        "scale": "n",
+        "yaml_file": "yolo11n.yaml",
+        "ch": 3
+      },
+      "module_counts": {
+        "DetectionModel": 1,
+        "Sequential": 18,
+        "Conv": 75,
+        "Conv2d": 88,
+        "BatchNorm2d": 81,
+        "SiLU": 1,
+        "C3k2": 8,
+        "ModuleList": 10,
+        "Bottleneck": 11,
+        "C3k": 3,
+        "SPPF": 1,
+        "MaxPool2d": 1,
+        "C2PSA": 1,
+        "PSABlock": 1,
+        "Attention": 1,
+        "Identity": 4,
+        "Upsample": 2,
+        "Concat": 4,
+        "Detect": 1,
+        "DWConv": 6,
+        "DFL": 1
+      },
+      "strides": [
+        8.0,
+        16.0,
+        32.0
+      ],
+      "train_args": {
+        "task": "detect",
+        "mode": "train",
+        "model": "D:\\ultralytics-main\\yolo11n.pt",
+        "data": "D:\\ultralytics-main\\datasets\\Safe Lab A(dst3542)\\data.yaml",
+        "epochs": 80,
+        "time": null,
+        "patience": 100,
+        "batch": 5,
+        "imgsz": 640,
+        "save": true,
+        "save_period": -1,
+        "cache": false,
+        "device": 0,
+        "workers": 2,
+        "project": "yolo_results\\",
+        "name": "train13",
+        "exist_ok": false,
+        "pretrained": true,
+        "optimizer": "auto",
+        "verbose": true,
+        "seed": 0,
+        "deterministic": true,
+        "single_cls": false,
+        "rect": false,
+        "cos_lr": false,
+        "close_mosaic": 10,
+        "resume": false,
+        "amp": true,
+        "fraction": 1.0,
+        "profile": false,
+        "freeze": null,
+        "multi_scale": false,
+        "overlap_mask": true,
+        "mask_ratio": 4,
+        "dropout": 0.0,
+        "val": true,
+        "split": "val",
+        "save_json": false,
+        "save_hybrid": false,
+        "conf": null,
+        "iou": 0.7,
+        "max_det": 300,
+        "half": false,
+        "dnn": false,
+        "plots": true,
+        "source": null,
+        "vid_stride": 1,
+        "stream_buffer": false,
+        "visualize": false,
+        "augment": false,
+        "agnostic_nms": false,
+        "classes": null,
+        "retina_masks": false,
+        "embed": null,
+        "show": false,
+        "save_frames": false,
+        "save_txt": false,
+        "save_conf": false,
+        "save_crop": false,
+        "show_labels": true,
+        "show_conf": true,
+        "show_boxes": true,
+        "line_width": null,
+        "format": "torchscript",
+        "keras": false,
+        "optimize": false,
+        "int8": false,
+        "dynamic": false,
+        "simplify": true,
+        "opset": null,
+        "workspace": null,
+        "nms": false,
+        "lr0": 0.01,
+        "lrf": 0.01,
+        "momentum": 0.937,
+        "weight_decay": 0.0005,
+        "warmup_epochs": 3.0,
+        "warmup_momentum": 0.8,
+        "warmup_bias_lr": 0.0,
+        "box": 7.5,
+        "cls": 0.5,
+        "dfl": 1.5,
+        "pose": 12.0,
+        "kobj": 1.0,
+        "nbs": 64,
+        "hsv_h": 0.015,
+        "hsv_s": 0.7,
+        "hsv_v": 0.4,
+        "degrees": 0.0,
+        "translate": 0.1,
+        "scale": 0.5,
+        "shear": 0.0,
+        "perspective": 0.0,
+        "flipud": 0.0,
+        "fliplr": 0.5,
+        "bgr": 0.0,
+        "mosaic": 0.5,
+        "mixup": 0.0,
+        "copy_paste": 0.0,
+        "copy_paste_mode": "flip",
+        "auto_augment": "randaugment",
+        "erasing": 0.4,
+        "crop_fraction": 1.0,
+        "cfg": null,
+        "tracker": "botsort.yaml"
+      },
+      "train_metrics": {
+        "metrics/precision(B)": 0.83433,
+        "metrics/recall(B)": 0.87683,
+        "metrics/mAP50(B)": 0.89022,
+        "metrics/mAP50-95(B)": 0.64334,
+        "val/box_loss": 0.79383,
+        "val/cls_loss": 0.5761,
+        "val/dfl_loss": 0.97996,
+        "fitness": 0.66803
+      },
+      "logged_epoch_count": 80,
+      "matching_csv_rows": [
+        {
+          "epoch": 77.0,
+          "time": 8775.25,
+          "train/box_loss": 0.82502,
+          "train/cls_loss": 0.54678,
+          "train/dfl_loss": 1.00905,
+          "metrics/precision(B)": 0.83433,
+          "metrics/recall(B)": 0.87683,
+          "metrics/mAP50(B)": 0.89022,
+          "metrics/mAP50-95(B)": 0.64334,
+          "val/box_loss": 0.79383,
+          "val/cls_loss": 0.5761,
+          "val/dfl_loss": 0.97996,
+          "lr/pg0": 3.71875e-05,
+          "lr/pg1": 3.71875e-05,
+          "lr/pg2": 3.71875e-05
+        }
+      ],
+      "first_csv_row": {
+        "epoch": 1.0,
+        "time": 120.52,
+        "train/box_loss": 1.42449,
+        "train/cls_loss": 2.63571,
+        "train/dfl_loss": 1.333,
+        "metrics/precision(B)": 0.56525,
+        "metrics/recall(B)": 0.61177,
+        "metrics/mAP50(B)": 0.58624,
+        "metrics/mAP50-95(B)": 0.39743,
+        "val/box_loss": 1.06368,
+        "val/cls_loss": 1.48528,
+        "val/dfl_loss": 1.11388,
+        "lr/pg0": 0.000208129,
+        "lr/pg1": 0.000208129,
+        "lr/pg2": 0.000208129
+      },
+      "last_csv_row": {
+        "epoch": 80.0,
+        "time": 9112.93,
+        "train/box_loss": 0.82094,
+        "train/cls_loss": 0.5416,
+        "train/dfl_loss": 1.00739,
+        "metrics/precision(B)": 0.83497,
+        "metrics/recall(B)": 0.87434,
+        "metrics/mAP50(B)": 0.88825,
+        "metrics/mAP50-95(B)": 0.64321,
+        "val/box_loss": 0.79426,
+        "val/cls_loss": 0.57637,
+        "val/dfl_loss": 0.97992,
+        "lr/pg0": 1.39844e-05,
+        "lr/pg1": 1.39844e-05,
+        "lr/pg2": 1.39844e-05
+      },
+      "best_map50_csv_row": {
+        "epoch": 77.0,
+        "time": 8775.25,
+        "train/box_loss": 0.82502,
+        "train/cls_loss": 0.54678,
+        "train/dfl_loss": 1.00905,
+        "metrics/precision(B)": 0.83433,
+        "metrics/recall(B)": 0.87683,
+        "metrics/mAP50(B)": 0.89022,
+        "metrics/mAP50-95(B)": 0.64334,
+        "val/box_loss": 0.79383,
+        "val/cls_loss": 0.5761,
+        "val/dfl_loss": 0.97996,
+        "lr/pg0": 3.71875e-05,
+        "lr/pg1": 3.71875e-05,
+        "lr/pg2": 3.71875e-05
+      },
+      "best_map5095_csv_row": {
+        "epoch": 77.0,
+        "time": 8775.25,
+        "train/box_loss": 0.82502,
+        "train/cls_loss": 0.54678,
+        "train/dfl_loss": 1.00905,
+        "metrics/precision(B)": 0.83433,
+        "metrics/recall(B)": 0.87683,
+        "metrics/mAP50(B)": 0.89022,
+        "metrics/mAP50-95(B)": 0.64334,
+        "val/box_loss": 0.79383,
+        "val/cls_loss": 0.5761,
+        "val/dfl_loss": 0.97996,
+        "lr/pg0": 3.71875e-05,
+        "lr/pg1": 3.71875e-05,
+        "lr/pg2": 3.71875e-05
+      },
+      "gflops_at_640_estimate": 6.4501248
+    },
+    "chem": {
+      "path": "hierarchical-lab-safety-monitor/labguard/models/chem_best.pt",
+      "size_bytes": 5503825,
+      "sha256": "a47f1b181c6c5d43608604fe7c860f4af7f3ee669fe6b7bffc4e39a20c74cb92",
+      "matching_training_weights": [
+        {
+          "path": "AIVision程序/pic/chem_model/weights/best.pt",
+          "matches_final_sha256": true
+        },
+        {
+          "path": "AIVision程序/chem/runs/detect/runs/chem_model/weights/best.pt",
+          "matches_final_sha256": true
+        }
+      ],
+      "checkpoint_version": "8.4.95",
+      "checkpoint_date": "2026-07-14T21:58:06.378989",
+      "checkpoint_epoch": -1,
+      "parameter_count": 2592570,
+      "tensor_dtypes": [
+        "torch.float16"
+      ],
+      "model_type": "DetectionModel",
+      "names": {
+        "0": "Beaker",
+        "1": "Burette",
+        "2": "Conical Flask",
+        "3": "Flat Bottom Flask",
+        "4": "Funnel",
+        "5": "Measuring Cylinder",
+        "6": "Pear shaped flask",
+        "7": "Pipette",
+        "8": "Reagent Bottle",
+        "9": "Round Bottom Flask",
+        "10": "Test tube",
+        "11": "Titrarion",
+        "12": "Volumetric flask",
+        "13": "Wash Bottle"
+      },
+      "model_yaml": {
+        "nc": 14,
+        "scales": {
+          "n": [
+            0.5,
+            0.25,
+            1024
+          ],
+          "s": [
+            0.5,
+            0.5,
+            1024
+          ],
+          "m": [
+            0.5,
+            1.0,
+            512
+          ],
+          "l": [
+            1.0,
+            1.0,
+            512
+          ],
+          "x": [
+            1.0,
+            1.5,
+            512
+          ]
+        },
+        "backbone": [
+          [
+            -1,
+            1,
+            "Conv",
+            [
+              64,
+              3,
+              2
+            ]
+          ],
+          [
+            -1,
+            1,
+            "Conv",
+            [
+              128,
+              3,
+              2
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C3k2",
+            [
+              256,
+              false,
+              0.25
+            ]
+          ],
+          [
+            -1,
+            1,
+            "Conv",
+            [
+              256,
+              3,
+              2
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C3k2",
+            [
+              512,
+              false,
+              0.25
+            ]
+          ],
+          [
+            -1,
+            1,
+            "Conv",
+            [
+              512,
+              3,
+              2
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C3k2",
+            [
+              512,
+              true
+            ]
+          ],
+          [
+            -1,
+            1,
+            "Conv",
+            [
+              1024,
+              3,
+              2
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C3k2",
+            [
+              1024,
+              true
+            ]
+          ],
+          [
+            -1,
+            1,
+            "SPPF",
+            [
+              1024,
+              5
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C2PSA",
+            [
+              1024
+            ]
+          ]
+        ],
+        "head": [
+          [
+            -1,
+            1,
+            "nn.Upsample",
+            [
+              "None",
+              2,
+              "nearest"
+            ]
+          ],
+          [
+            [
+              -1,
+              6
+            ],
+            1,
+            "Concat",
+            [
+              1
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C3k2",
+            [
+              512,
+              false
+            ]
+          ],
+          [
+            -1,
+            1,
+            "nn.Upsample",
+            [
+              "None",
+              2,
+              "nearest"
+            ]
+          ],
+          [
+            [
+              -1,
+              4
+            ],
+            1,
+            "Concat",
+            [
+              1
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C3k2",
+            [
+              256,
+              false
+            ]
+          ],
+          [
+            -1,
+            1,
+            "Conv",
+            [
+              256,
+              3,
+              2
+            ]
+          ],
+          [
+            [
+              -1,
+              13
+            ],
+            1,
+            "Concat",
+            [
+              1
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C3k2",
+            [
+              512,
+              false
+            ]
+          ],
+          [
+            -1,
+            1,
+            "Conv",
+            [
+              512,
+              3,
+              2
+            ]
+          ],
+          [
+            [
+              -1,
+              10
+            ],
+            1,
+            "Concat",
+            [
+              1
+            ]
+          ],
+          [
+            -1,
+            2,
+            "C3k2",
+            [
+              1024,
+              true
+            ]
+          ],
+          [
+            [
+              16,
+              19,
+              22
+            ],
+            1,
+            "Detect",
+            [
+              "nc"
+            ]
+          ]
+        ],
+        "scale": "n",
+        "yaml_file": "yolo11n.yaml",
+        "ch": 3,
+        "channels": 3
+      },
+      "module_counts": {
+        "DetectionModel": 1,
+        "Sequential": 18,
+        "Conv": 75,
+        "Conv2d": 88,
+        "BatchNorm2d": 81,
+        "SiLU": 1,
+        "C3k2": 8,
+        "ModuleList": 10,
+        "Bottleneck": 11,
+        "C3k": 3,
+        "SPPF": 1,
+        "Identity": 5,
+        "MaxPool2d": 1,
+        "C2PSA": 1,
+        "PSABlock": 1,
+        "Attention": 1,
+        "Upsample": 2,
+        "Concat": 4,
+        "Detect": 1,
+        "DWConv": 6,
+        "DFL": 1
+      },
+      "strides": [
+        8.0,
+        16.0,
+        32.0
+      ],
+      "train_args": {
+        "task": "detect",
+        "mode": "train",
+        "model": "yolo11n.pt",
+        "data": "/home/smilewei/文件/Smilewei_Ujmcmc/Coding_Life/AIVision/chem/chemical-lab02/data.yaml",
+        "epochs": 50,
+        "time": null,
+        "patience": 100,
+        "batch": 16,
+        "imgsz": 640,
+        "save": true,
+        "save_period": -1,
+        "cache": false,
+        "device": "",
+        "workers": 8,
+        "project": "runs",
+        "name": "chem_model",
+        "exist_ok": false,
+        "pretrained": true,
+        "cls_remap": true,
+        "optimizer": "auto",
+        "verbose": true,
+        "seed": 0,
+        "deterministic": true,
+        "single_cls": false,
+        "rect": false,
+        "cos_lr": false,
+        "close_mosaic": 10,
+        "resume": false,
+        "amp": true,
+        "fraction": 1.0,
+        "profile": false,
+        "freeze": null,
+        "multi_scale": 0.0,
+        "compile": false,
+        "overlap_mask": true,
+        "mask_ratio": 4,
+        "dropout": 0.0,
+        "val": true,
+        "split": "val",
+        "save_json": false,
+        "conf": null,
+        "iou": 0.7,
+        "max_det": 300,
+        "quantize": null,
+        "dnn": false,
+        "plots": true,
+        "end2end": null,
+        "source": null,
+        "vid_stride": 1,
+        "stream_buffer": false,
+        "visualize": false,
+        "augment": false,
+        "agnostic_nms": false,
+        "classes": null,
+        "retina_masks": false,
+        "embed": null,
+        "show": false,
+        "save_frames": false,
+        "save_txt": false,
+        "save_conf": false,
+        "save_crop": false,
+        "show_labels": true,
+        "show_conf": true,
+        "show_boxes": true,
+        "line_width": null,
+        "format": "torchscript",
+        "keras": false,
+        "optimize": false,
+        "dynamic": false,
+        "simplify": true,
+        "opset": null,
+        "workspace": null,
+        "nms": false,
+        "lr0": 0.01,
+        "lrf": 0.01,
+        "momentum": 0.937,
+        "weight_decay": 0.0005,
+        "warmup_epochs": 3.0,
+        "warmup_momentum": 0.8,
+        "warmup_bias_lr": 0.0,
+        "distill_model": null,
+        "dis": 6.0,
+        "box": 7.5,
+        "cls": 0.5,
+        "cls_pw": 0.0,
+        "dfl": 1.5,
+        "pose": 12.0,
+        "kobj": 1.0,
+        "rle": 1.0,
+        "angle": 1.0,
+        "nbs": 64,
+        "hsv_h": 0.015,
+        "hsv_s": 0.7,
+        "hsv_v": 0.4,
+        "degrees": 0.0,
+        "translate": 0.1,
+        "scale": 0.5,
+        "shear": 0.0,
+        "perspective": 0.0,
+        "flipud": 0.0,
+        "fliplr": 0.5,
+        "bgr": 0.0,
+        "mosaic": 1.0,
+        "mixup": 0.0,
+        "cutmix": 0.0,
+        "copy_paste": 0.0,
+        "copy_paste_mode": "flip",
+        "auto_augment": "randaugment",
+        "erasing": 0.4,
+        "cfg": null,
+        "tracker": "tracktrack.yaml"
+      },
+      "train_metrics": {
+        "metrics/precision(B)": 0.86696,
+        "metrics/recall(B)": 0.85099,
+        "metrics/mAP50(B)": 0.89265,
+        "metrics/mAP50-95(B)": 0.73729,
+        "val/box_loss": 0.79319,
+        "val/cls_loss": 0.57741,
+        "val/dfl_loss": 1.28827,
+        "fitness": 0.73729
+      },
+      "logged_epoch_count": 50,
+      "matching_csv_rows": [
+        {
+          "epoch": 50.0,
+          "time": 606.413,
+          "train/box_loss": 0.60058,
+          "train/cls_loss": 0.44166,
+          "train/dfl_loss": 1.10745,
+          "metrics/precision(B)": 0.86696,
+          "metrics/recall(B)": 0.85099,
+          "metrics/mAP50(B)": 0.89265,
+          "metrics/mAP50-95(B)": 0.73729,
+          "val/box_loss": 0.79319,
+          "val/cls_loss": 0.57741,
+          "val/dfl_loss": 1.28827,
+          "lr/pg0": 1.65688e-05,
+          "lr/pg1": 1.65688e-05,
+          "lr/pg2": 1.65688e-05
+        }
+      ],
+      "first_csv_row": {
+        "epoch": 1.0,
+        "time": 19.8525,
+        "train/box_loss": 1.10583,
+        "train/cls_loss": 3.6389,
+        "train/dfl_loss": 1.45774,
+        "metrics/precision(B)": 0.71818,
+        "metrics/recall(B)": 0.21417,
+        "metrics/mAP50(B)": 0.23273,
+        "metrics/mAP50-95(B)": 0.16235,
+        "val/box_loss": 0.9829,
+        "val/cls_loss": 3.55008,
+        "val/dfl_loss": 1.52515,
+        "lr/pg0": 0.000183749,
+        "lr/pg1": 0.000183749,
+        "lr/pg2": 0.000183749
+      },
+      "last_csv_row": {
+        "epoch": 50.0,
+        "time": 606.413,
+        "train/box_loss": 0.60058,
+        "train/cls_loss": 0.44166,
+        "train/dfl_loss": 1.10745,
+        "metrics/precision(B)": 0.86696,
+        "metrics/recall(B)": 0.85099,
+        "metrics/mAP50(B)": 0.89265,
+        "metrics/mAP50-95(B)": 0.73729,
+        "val/box_loss": 0.79319,
+        "val/cls_loss": 0.57741,
+        "val/dfl_loss": 1.28827,
+        "lr/pg0": 1.65688e-05,
+        "lr/pg1": 1.65688e-05,
+        "lr/pg2": 1.65688e-05
+      },
+      "best_map50_csv_row": {
+        "epoch": 50.0,
+        "time": 606.413,
+        "train/box_loss": 0.60058,
+        "train/cls_loss": 0.44166,
+        "train/dfl_loss": 1.10745,
+        "metrics/precision(B)": 0.86696,
+        "metrics/recall(B)": 0.85099,
+        "metrics/mAP50(B)": 0.89265,
+        "metrics/mAP50-95(B)": 0.73729,
+        "val/box_loss": 0.79319,
+        "val/cls_loss": 0.57741,
+        "val/dfl_loss": 1.28827,
+        "lr/pg0": 1.65688e-05,
+        "lr/pg1": 1.65688e-05,
+        "lr/pg2": 1.65688e-05
+      },
+      "best_map5095_csv_row": {
+        "epoch": 50.0,
+        "time": 606.413,
+        "train/box_loss": 0.60058,
+        "train/cls_loss": 0.44166,
+        "train/dfl_loss": 1.10745,
+        "metrics/precision(B)": 0.86696,
+        "metrics/recall(B)": 0.85099,
+        "metrics/mAP50(B)": 0.89265,
+        "metrics/mAP50-95(B)": 0.73729,
+        "val/box_loss": 0.79319,
+        "val/cls_loss": 0.57741,
+        "val/dfl_loss": 1.28827,
+        "lr/pg0": 1.65688e-05,
+        "lr/pg1": 1.65688e-05,
+        "lr/pg2": 1.65688e-05
+      },
+      "gflops_at_640_estimate": 6.452275200000001
+    }
+  },
+  "datasets": {
+    "ppe": {
+      "path": "AIVision程序/person/Safe Lab A(dst3542)",
+      "splits": {
+        "train": {
+          "image_count": 5096,
+          "label_file_count": 5096,
+          "object_count": 37318,
+          "class_object_counts": {
+            "0": 2061,
+            "1": 2087,
+            "2": 5193,
+            "3": 3414,
+            "4": 3237,
+            "5": 3555,
+            "6": 1232,
+            "7": 5298,
+            "8": 3359,
+            "9": 3428,
+            "10": 1220,
+            "11": 3234
+          },
+          "empty_label_files": 69,
+          "malformed_examples": [],
+          "images_without_label": 0,
+          "labels_without_image": 0,
+          "identified_video_group_count": 32,
+          "example_image_filenames": [
+            "C1200_MP4-0001_jpg.rf.6dbe6da21ad281959e5a7a0794f7a0f0.jpg",
+            "C1200_MP4-0002_jpg.rf.6cd4cbba4f74f83eb1214f6efd6190ae.jpg",
+            "C1200_MP4-0004_jpg.rf.e8953822184ff003f6aa31819208acca.jpg"
+          ],
+          "coco_image_count": 5096,
+          "coco_object_count": 37318,
+          "coco_categories": [
+            {
+              "id": 1,
+              "name": "Gloves"
+            },
+            {
+              "id": 2,
+              "name": "Head Mask"
+            },
+            {
+              "id": 3,
+              "name": "Lab Coat"
+            },
+            {
+              "id": 4,
+              "name": "Mask"
+            },
+            {
+              "id": 5,
+              "name": "Googles"
+            },
+            {
+              "id": 6,
+              "name": "Drinking"
+            },
+            {
+              "id": 7,
+              "name": "Eating"
+            },
+            {
+              "id": 8,
+              "name": "No Lab coat"
+            },
+            {
+              "id": 9,
+              "name": "No googles"
+            },
+            {
+              "id": 10,
+              "name": "No Head Mask"
+            },
+            {
+              "id": 11,
+              "name": "No Mask"
+            },
+            {
+              "id": 12,
+              "name": "No Gloves"
+            }
+          ]
+        },
+        "valid": {
+          "image_count": 1414,
+          "label_file_count": 1414,
+          "object_count": 10331,
+          "class_object_counts": {
+            "0": 602,
+            "1": 580,
+            "2": 1368,
+            "3": 943,
+            "4": 915,
+            "5": 962,
+            "6": 313,
+            "7": 1530,
+            "8": 908,
+            "9": 956,
+            "10": 333,
+            "11": 921
+          },
+          "empty_label_files": 14,
+          "malformed_examples": [],
+          "images_without_label": 0,
+          "labels_without_image": 0,
+          "identified_video_group_count": 31,
+          "example_image_filenames": [
+            "C1200_MP4-0003_jpg.rf.aa411025f3cf351d6ab55e8dd939ac45.jpg",
+            "C1200_MP4-0006_jpg.rf.62c0103a838cbf77e2bcc5c51c3f1b4d.jpg",
+            "C1200_MP4-0015_jpg.rf.62c87f6adde0f0f590912a88cccd5d4a.jpg"
+          ],
+          "coco_image_count": 1414,
+          "coco_object_count": 10331,
+          "coco_categories": [
+            {
+              "id": 1,
+              "name": "Gloves"
+            },
+            {
+              "id": 2,
+              "name": "Head Mask"
+            },
+            {
+              "id": 3,
+              "name": "Lab Coat"
+            },
+            {
+              "id": 4,
+              "name": "Mask"
+            },
+            {
+              "id": 5,
+              "name": "Googles"
+            },
+            {
+              "id": 6,
+              "name": "Drinking"
+            },
+            {
+              "id": 7,
+              "name": "Eating"
+            },
+            {
+              "id": 8,
+              "name": "No Lab coat"
+            },
+            {
+              "id": 9,
+              "name": "No googles"
+            },
+            {
+              "id": 10,
+              "name": "No Head Mask"
+            },
+            {
+              "id": 11,
+              "name": "No Mask"
+            },
+            {
+              "id": 12,
+              "name": "No Gloves"
+            }
+          ]
+        },
+        "test": {
+          "image_count": 707,
+          "label_file_count": 707,
+          "object_count": 5103,
+          "class_object_counts": {
+            "0": 304,
+            "1": 299,
+            "2": 688,
+            "3": 466,
+            "4": 439,
+            "5": 461,
+            "6": 149,
+            "7": 747,
+            "8": 466,
+            "9": 486,
+            "10": 149,
+            "11": 449
+          },
+          "empty_label_files": 12,
+          "malformed_examples": [],
+          "images_without_label": 0,
+          "labels_without_image": 0,
+          "identified_video_group_count": 31,
+          "example_image_filenames": [
+            "C1200_MP4-0000_jpg.rf.7bebc8ed0bc12acc6f24c51243a3d6ad.jpg",
+            "C1200_MP4-0032_jpg.rf.34dc2526ce16045289905b5e40a0e744.jpg",
+            "C1200_MP4-0041_jpg.rf.04794f36a443a75ff9e07fa375517255.jpg"
+          ],
+          "coco_image_count": 707,
+          "coco_object_count": 5103,
+          "coco_categories": [
+            {
+              "id": 1,
+              "name": "Gloves"
+            },
+            {
+              "id": 2,
+              "name": "Head Mask"
+            },
+            {
+              "id": 3,
+              "name": "Lab Coat"
+            },
+            {
+              "id": 4,
+              "name": "Mask"
+            },
+            {
+              "id": 5,
+              "name": "Googles"
+            },
+            {
+              "id": 6,
+              "name": "Drinking"
+            },
+            {
+              "id": 7,
+              "name": "Eating"
+            },
+            {
+              "id": 8,
+              "name": "No Lab coat"
+            },
+            {
+              "id": 9,
+              "name": "No googles"
+            },
+            {
+              "id": 10,
+              "name": "No Head Mask"
+            },
+            {
+              "id": 11,
+              "name": "No Mask"
+            },
+            {
+              "id": 12,
+              "name": "No Gloves"
+            }
+          ]
+        }
+      },
+      "class_object_counts_all_splits": {
+        "0": 2967,
+        "1": 2966,
+        "2": 7249,
+        "3": 4823,
+        "4": 4591,
+        "5": 4978,
+        "6": 1694,
+        "7": 7575,
+        "8": 4733,
+        "9": 4870,
+        "10": 1702,
+        "11": 4604
+      },
+      "cross_split_same_base_filename": {
+        "train-valid": {
+          "count": 0,
+          "examples": []
+        },
+        "train-test": {
+          "count": 0,
+          "examples": []
+        },
+        "valid-test": {
+          "count": 0,
+          "examples": []
+        }
+      },
+      "cross_split_shared_video_groups": {
+        "train-valid": {
+          "count": 31,
+          "examples": [
+            "C1200",
+            "C1201",
+            "C1202",
+            "C1203",
+            "C1206",
+            "C1207",
+            "C1208",
+            "C1214-1-"
+          ]
+        },
+        "train-test": {
+          "count": 31,
+          "examples": [
+            "C1200",
+            "C1201",
+            "C1202",
+            "C1203",
+            "C1206",
+            "C1207",
+            "C1208",
+            "C1214-1-"
+          ]
+        },
+        "valid-test": {
+          "count": 31,
+          "examples": [
+            "C1200",
+            "C1201",
+            "C1202",
+            "C1203",
+            "C1206",
+            "C1207",
+            "C1208",
+            "C1214-1-"
+          ]
+        }
+      },
+      "cross_split_identical_file_hash": {
+        "unique_shared_contents_per_split_pair": {
+          "train-valid": 0,
+          "train-test": 0,
+          "valid-test": 0
+        },
+        "cross_split_duplicate_content_count": 0,
+        "examples": []
+      }
+    },
+    "chem14": {
+      "path": "AIVision程序/chem/chemical-lab02",
+      "splits": {
+        "train": {
+          "image_count": 1858,
+          "label_file_count": 1858,
+          "object_count": 2416,
+          "class_object_counts": {
+            "0": 388,
+            "1": 65,
+            "2": 102,
+            "3": 86,
+            "4": 53,
+            "5": 139,
+            "6": 303,
+            "7": 70,
+            "8": 97,
+            "9": 36,
+            "10": 462,
+            "11": 297,
+            "12": 251,
+            "13": 67
+          },
+          "empty_label_files": 0,
+          "malformed_examples": [],
+          "images_without_label": 0,
+          "labels_without_image": 0,
+          "identified_video_group_count": 0,
+          "example_image_filenames": [
+            "1000-11-1-_png_jpg.rf.c17e796d3da560bdf4639ac522189d4c.jpg",
+            "1000-12-1-_jpg.rf.f55dc16db613a7269f69fdbbea688ea9.jpg",
+            "1000-13-1-_jpg.rf.11ee32fc7567261aee88b22e4d6f54d4.jpg"
+          ]
+        },
+        "valid": {
+          "image_count": 517,
+          "label_file_count": 517,
+          "object_count": 661,
+          "class_object_counts": {
+            "0": 127,
+            "1": 16,
+            "2": 15,
+            "3": 23,
+            "4": 14,
+            "5": 35,
+            "6": 74,
+            "7": 30,
+            "8": 19,
+            "9": 13,
+            "10": 123,
+            "11": 81,
+            "12": 84,
+            "13": 7
+          },
+          "empty_label_files": 0,
+          "malformed_examples": [],
+          "images_without_label": 0,
+          "labels_without_image": 0,
+          "identified_video_group_count": 0,
+          "example_image_filenames": [
+            "09f7acf1-18f8-496d-bdf9-78d8df78b56b_jpg.rf.2a254707b96726d208e8001132d53ebe.jpg",
+            "1000-10_jpg.rf.d9a71465c411b46dd7bc9fea4dcacea7.jpg",
+            "1000-21_jpg.rf.abac5825d61ac0c212c5d3c97a3eb85f.jpg"
+          ]
+        },
+        "test": {
+          "image_count": 254,
+          "label_file_count": 254,
+          "object_count": 354,
+          "class_object_counts": {
+            "0": 60,
+            "1": 7,
+            "2": 10,
+            "3": 11,
+            "4": 4,
+            "5": 20,
+            "6": 35,
+            "7": 29,
+            "8": 7,
+            "9": 3,
+            "10": 77,
+            "11": 35,
+            "12": 49,
+            "13": 7
+          },
+          "empty_label_files": 0,
+          "malformed_examples": [],
+          "images_without_label": 0,
+          "labels_without_image": 0,
+          "identified_video_group_count": 0,
+          "example_image_filenames": [
+            "1000-14-1-_jpg.rf.ad38289188f5d03fc69f5e5b8571d5de.jpg",
+            "1000-27-1-_jpg.rf.17896462b005a222438c5e878afd39ac.jpg",
+            "1000-31_jpg.rf.e23928b40dfadf4341954f77608e7818.jpg"
+          ]
+        }
+      },
+      "class_object_counts_all_splits": {
+        "0": 575,
+        "1": 88,
+        "2": 127,
+        "3": 120,
+        "4": 71,
+        "5": 194,
+        "6": 412,
+        "7": 129,
+        "8": 123,
+        "9": 52,
+        "10": 662,
+        "11": 413,
+        "12": 384,
+        "13": 81
+      },
+      "cross_split_same_base_filename": {
+        "train-valid": {
+          "count": 50,
+          "examples": [
+            "OIP-10-_jpg",
+            "OIP-100-_jpg",
+            "OIP-12-_jpg",
+            "OIP-13-_jpg",
+            "OIP-14-_jpg",
+            "OIP-15-_jpg",
+            "OIP-16-_jpg",
+            "OIP-17-_jpg"
+          ]
+        },
+        "train-test": {
+          "count": 30,
+          "examples": [
+            "OIP-10-_jpg",
+            "OIP-14-_jpg",
+            "OIP-15-_jpg",
+            "OIP-16-_jpg",
+            "OIP-17-_jpg",
+            "OIP-18-_jpg",
+            "OIP-22-_jpg",
+            "OIP-24-_jpg"
+          ]
+        },
+        "valid-test": {
+          "count": 14,
+          "examples": [
+            "OIP-10-_jpg",
+            "OIP-14-_jpg",
+            "OIP-15-_jpg",
+            "OIP-16-_jpg",
+            "OIP-17-_jpg",
+            "OIP-18-_jpg",
+            "OIP-22-_jpg",
+            "OIP-24-_jpg"
+          ]
+        }
+      },
+      "cross_split_shared_video_groups": {
+        "train-valid": {
+          "count": 0,
+          "examples": []
+        },
+        "train-test": {
+          "count": 0,
+          "examples": []
+        },
+        "valid-test": {
+          "count": 0,
+          "examples": []
+        }
+      },
+      "cross_split_identical_file_hash": {
+        "unique_shared_contents_per_split_pair": {
+          "train-valid": 0,
+          "train-test": 0,
+          "valid-test": 0
+        },
+        "cross_split_duplicate_content_count": 0,
+        "examples": []
+      }
+    },
+    "chem5_unused": {
+      "path": "AIVision程序/chem/chemical-lab",
+      "splits": {
+        "train": {
+          "image_count": 1346,
+          "label_file_count": 1346,
+          "object_count": 2270,
+          "class_object_counts": {
+            "0": 539,
+            "1": 412,
+            "2": 317,
+            "3": 611,
+            "4": 391
+          },
+          "empty_label_files": 0,
+          "malformed_examples": [],
+          "images_without_label": 0,
+          "labels_without_image": 0,
+          "identified_video_group_count": 0,
+          "example_image_filenames": [
+            "10_9_500-1-_png_3_jpg.rf.b484422b5c60425dac77541e2850a0f5.jpg",
+            "10_9_500-3-_png_1_jpg.rf.b86a27ad311e1389d1679662e3d28936.jpg",
+            "10_9_below_500-13-_1_jpg.rf.b3205d499bca9a7cfcf3717ff4b4fea8.jpg"
+          ]
+        },
+        "valid": {
+          "image_count": 392,
+          "label_file_count": 392,
+          "object_count": 611,
+          "class_object_counts": {
+            "0": 155,
+            "1": 109,
+            "2": 95,
+            "3": 147,
+            "4": 105
+          },
+          "empty_label_files": 0,
+          "malformed_examples": [],
+          "images_without_label": 0,
+          "labels_without_image": 0,
+          "identified_video_group_count": 0,
+          "example_image_filenames": [
+            "10_9_500-1-_png_1_jpg.rf.2d791c40374507a8a8f3f937d91fe51e.jpg",
+            "10_9_below_500-1-_1_jpg.rf.857f8d0bc9f613c15715683025bc4d0d.jpg",
+            "12_png_1_jpg.rf.db5a309d9102d1eb29e2db061deb6c44.jpg"
+          ]
+        },
+        "test": {
+          "image_count": 180,
+          "label_file_count": 180,
+          "object_count": 293,
+          "class_object_counts": {
+            "0": 79,
+            "1": 56,
+            "2": 37,
+            "3": 77,
+            "4": 44
+          },
+          "empty_label_files": 0,
+          "malformed_examples": [],
+          "images_without_label": 0,
+          "labels_without_image": 0,
+          "identified_video_group_count": 0,
+          "example_image_filenames": [
+            "183_3_jpg.rf.795450c408cef3017a6fdb663edca8d7.jpg",
+            "20250105_150104_jpg.rf.22b7561c9f059a7a4ef43b79b5a2fd2f.jpg",
+            "20250105_151558_jpg.rf.584d168fd7126a4f73b200176bbf3c1d.jpg"
+          ]
+        }
+      },
+      "class_object_counts_all_splits": {
+        "0": 773,
+        "1": 577,
+        "2": 449,
+        "3": 835,
+        "4": 540
+      },
+      "cross_split_same_base_filename": {
+        "train-valid": {
+          "count": 0,
+          "examples": []
+        },
+        "train-test": {
+          "count": 1,
+          "examples": [
+            "IMG_20250105_153031_2_jpg"
+          ]
+        },
+        "valid-test": {
+          "count": 0,
+          "examples": []
+        }
+      },
+      "cross_split_shared_video_groups": {
+        "train-valid": {
+          "count": 0,
+          "examples": []
+        },
+        "train-test": {
+          "count": 0,
+          "examples": []
+        },
+        "valid-test": {
+          "count": 0,
+          "examples": []
+        }
+      }
+    }
+  }
+}

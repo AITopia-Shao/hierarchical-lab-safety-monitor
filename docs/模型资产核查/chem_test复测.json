@@ -1,0 +1,150 @@
+{
+  "kind": "chem",
+  "split": "test",
+  "test_image_count": 254,
+  "weights_sha256": "a47f1b181c6c5d43608604fe7c860f4af7f3ee669fe6b7bffc4e39a20c74cb92",
+  "inspection_environment": {
+    "torch": "2.14.1",
+    "ultralytics": "8.4.95"
+  },
+  "platform": "macOS-26.5.1-arm64-arm-64bit",
+  "processor": "arm",
+  "device": "cpu",
+  "torch_threads_requested": 2,
+  "settings": {
+    "imgsz": 640,
+    "batch": 8,
+    "conf": 0.001,
+    "nms_iou": 0.7,
+    "max_det": 300,
+    "augmentation": false
+  },
+  "results_dict": {
+    "metrics/precision(B)": 0.8380189850740062,
+    "metrics/recall(B)": 0.8761348130396233,
+    "metrics/mAP50(B)": 0.9000392967646873,
+    "metrics/mAP50-95(B)": 0.7191943546917426,
+    "fitness": 0.7191943546917426
+  },
+  "speed_ms_per_image": {
+    "preprocess": 0.38932709071022553,
+    "inference": 37.616879105435935,
+    "loss": 0.00013483185907752493,
+    "postprocess": 0.2584739003374468
+  },
+  "evaluation_wall_time_s": 13.188773155212402,
+  "per_class": [
+    {
+      "class_id": 0,
+      "name": "Beaker",
+      "precision": 0.9535913023499736,
+      "recall": 1.0,
+      "AP50": 0.9793836405529952,
+      "AP50_95": 0.7756328259545711
+    },
+    {
+      "class_id": 1,
+      "name": "Burette",
+      "precision": 0.8701744316424929,
+      "recall": 0.9613954531399426,
+      "AP50": 0.9425000000000001,
+      "AP50_95": 0.8227083333333335
+    },
+    {
+      "class_id": 2,
+      "name": "Conical Flask",
+      "precision": 0.8549238631313365,
+      "recall": 1.0,
+      "AP50": 0.9768181818181818,
+      "AP50_95": 0.9421818181818182
+    },
+    {
+      "class_id": 3,
+      "name": "Flat Bottom Flask",
+      "precision": 0.8704072101571059,
+      "recall": 0.6129821607998118,
+      "AP50": 0.7698165054686794,
+      "AP50_95": 0.6442088764349634
+    },
+    {
+      "class_id": 4,
+      "name": "Funnel",
+      "precision": 0.7832549879770977,
+      "recall": 1.0,
+      "AP50": 0.995,
+      "AP50_95": 0.9077500000000001
+    },
+    {
+      "class_id": 5,
+      "name": "Measuring Cylinder",
+      "precision": 0.7137763428726109,
+      "recall": 0.9975932200730866,
+      "AP50": 0.8439285714285714,
+      "AP50_95": 0.6786955023428135
+    },
+    {
+      "class_id": 6,
+      "name": "Pear shaped flask",
+      "precision": 0.9720920168734245,
+      "recall": 0.9953126074432808,
+      "AP50": 0.9824999999999998,
+      "AP50_95": 0.7451921793461247
+    },
+    {
+      "class_id": 7,
+      "name": "Pipette",
+      "precision": 0.9544354256550984,
+      "recall": 0.7223850569881196,
+      "AP50": 0.8834138794205209,
+      "AP50_95": 0.6072925349261664
+    },
+    {
+      "class_id": 8,
+      "name": "Reagent Bottle",
+      "precision": 1.0,
+      "recall": 0.6980494345124625,
+      "AP50": 0.9109999999999998,
+      "AP50_95": 0.5066380952380951
+    },
+    {
+      "class_id": 9,
+      "name": "Round Bottom Flask",
+      "precision": 0.5842784767384975,
+      "recall": 0.6666666666666666,
+      "AP50": 0.8300000000000001,
+      "AP50_95": 0.77475
+    },
+    {
+      "class_id": 10,
+      "name": "Test tube",
+      "precision": 0.7695751643725565,
+      "recall": 0.8441558441558441,
+      "AP50": 0.8250248287844073,
+      "AP50_95": 0.4838663616524458
+    },
+    {
+      "class_id": 11,
+      "name": "Titrarion",
+      "precision": 0.9154018455029502,
+      "recall": 0.9714285714285714,
+      "AP50": 0.983003616636528,
+      "AP50_95": 0.8800391325103567
+    },
+    {
+      "class_id": 12,
+      "name": "Volumetric flask",
+      "precision": 0.9390143005330092,
+      "recall": 0.9387755102040817,
+      "AP50": 0.9368019562367652,
+      "AP50_95": 0.7320108185842221
+    },
+    {
+      "class_id": 13,
+      "name": "Wash Bottle",
+      "precision": 0.5513404232299343,
+      "recall": 0.8571428571428571,
+      "AP50": 0.7413589743589741,
+      "AP50_95": 0.5677544871794871
+    }
+  ]
+}
