@@ -1,0 +1,40 @@
+# ---- 不上传：大文件与个人信息 ----
+*.mp4
+*报名表*.pdf
+local_private/       # 本地私有资料：演示视频、报名表等，不上传
+
+# ---- 运行时生成 ----
+runtime/
+**/runtime/
+voice_sd/
+*.db
+*.log
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+
+# ---- 导出的模型（体积大，按需重新导出）----
+*_rknn_model/
+*.onnx
+
+# ---- 系统与编辑器 ----
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+~$*
+
+# ---- 演示视频（体积大）----
+labguard/media/
+
+# macOS 独立环境、缓存与启动日志
+.venv-macos/
+.venv-macos.backup-*/
+.macos-runtime/

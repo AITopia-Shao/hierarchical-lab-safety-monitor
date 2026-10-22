@@ -1,0 +1,152 @@
+# =====================================================================
+#  实验室安全事前干预监测系统 - 统一配置文件
+#  所有阈值、端口、机位参数都在这里改，不需要改代码。
+#  缺省的项会自动使用 src/config.py 里的默认值。
+# =====================================================================
+
+# ---- 下位机串口（ESP32-S3 / STM32）----
+serial:
+  port: auto            # auto = 自动识别（优先 /dev/labguard 软链接）；也可写 /dev/ttyACM0、COM5
+  baudrate: 115200
+  heartbeat_s: 1.0      # 心跳周期；下位机超过 30 秒收不到心跳会进入兜底保护
+
+# ---- 摄像头 ----
+camera:
+  pano: 0               # 全景（宏观）：整数索引 / /dev/v4l/by-id/... 设备路径 / http(s)/rtsp 地址
+  desk: 0               # 台面（微观）：与 pano 相同时自动进入"单摄复用"模式
+  width: 640
+  height: 480
+  fourcc: MJPG          # USB 摄像头用 MJPG 降低带宽，两路同时接在香橙派上更稳
+
+# ---- 视觉推理 ----
+vision:
+  prefer_format: [rknn, onnx, pt]   # 按顺序寻找 models/ 下的模型；香橙派上优先使用 NPU 的 RKNN 模型
+  imgsz: 640
+  conf: 0.35
+  iou: 0.45
+  device: cpu
+
+# ---- 人员在场判定（PPE 模型的任意一种装备检测都算"有人"）----
+presence:
+  absent_seconds: 15    # 连续这么多秒画面里没有任何人员装备，才判定为"无人值守"
+  recover_seconds: 1.0  # 人回来后，连续检测到这么久才解除"无人值守"，避免抖动
+
+# ---- 视觉违规的时间投票（防止单帧误报）----
+voting:
+  window_s: 3.0         # 统计窗口
+  on_ratio: 0.6         # 窗口内命中帧占比 ≥ 该值 → 确认违规
+  off_ratio: 0.2        # 窗口内命中帧占比 ≤ 该值 → 解除违规
+  min_frames: 4         # 窗口内至少要有这么多帧才做判断
+
+# ---- 疑似伏案（以面部装备框作为头部位置的近似）----
+sleep:
+  head_y_ratio: 0.60    # 头部中心低于画面高度的 60% 视为低头
+  still_seconds: 10     # 低头且基本静止持续这么久 → 疑似伏案
+  max_motion: 0.03      # 静止判定：头部中心的移动幅度（归一化坐标）
+
+# ---- 台面桌边线标定（台面摄像头画面里、靠近操作者的那条桌边）----
+desk:
+  edge_line: [[0.0, 0.92], [1.0, 0.92]]   # 归一化坐标 [x, y]，部署后按实际机位修改
+  edge_margin: 0.06                        # 器皿底部离桌边线小于该距离 → 靠近桌边预警
+
+# ---- 安全规则（状态机）----
+rules:
+  heating_on_c: 50              # 热源表面温度 ≥ 该值视为"正在加热"
+  dry_burn_c: 120               # 热源表面温度 ≥ 该值判定为干烧 → 断电（水在常压下最高约 100℃）
+  rate_c_per_s: 2.0             # 升温速率 ≥ 该值……
+  rate_min_c: 80                # ……且温度 ≥ 该值 → 升温异常预警
+  unattended_heating_cut_s: 60  # 加热中无人值守持续这么多秒 → 断电
+  smoke_raw: 1800               # MQ-2 原始 ADC 读数（0-4095）阈值，需现场标定
+  humidity_high: 80             # 湿度过高告警 %
+  ambient_high_c: 40            # 环境温度过高告警 ℃
+  fallback_ambient_cut_c: 55    # 未接入热源测温时的兜底规则：器皿 + 无人值守 + 环境温度超过该值 → 断电
+  sim_latch_release_s: 10       # 无下位机（模拟模式）时，危险解除后多少秒自动解除断电锁定
+  predict_eta_warn_s: 90        # 越过沸点后仍在升温，预计这么多秒内达到干烧温度 → 提前提醒（不断电）
+  boil_unattended_warn_s: 300   # 沸腾持续这么多秒且无人值守 → 提醒（液体在持续蒸发）
+  item_hold_s: 3                # 器皿最近这么多秒内被识别到就算还在台面上（防止识别结果逐帧跳动导致反复告警）
+
+# ---- 事件、语音与存储 ----
+events:
+  reminder_s: 30                # 违规持续存在时，每隔多少秒重复语音提醒一次
+  retrigger_s: 10               # 事件解除后这么多秒内再次出现，算同一次（识别结果时有时无时不反复刷屏）
+  db: runtime/events.db
+  snapshot_dir: runtime/snapshots
+  voice:                        # DFPlayer 的 TF 卡曲目编号（0001.mp3 = 1）
+    ppe_goggles: 1
+    ppe_coat: 2
+    ppe_gloves: 3
+    ppe_mask: 4
+    ppe_headmask: 5
+    eating: 6
+    sleeping: 7
+    edge_risk: 8
+    unattended_heating: 9
+    dry_burn: 10
+    smoke: 11
+    humidity_high: 12
+    dry_burn_predict: 13
+
+# ---- 远程通知（L2 级别，可选）----
+notify:
+  webhook_url: ""               # 企业微信 / 钉钉群机器人 Webhook；留空则不发送
+  min_level: WARNING
+
+# ---- 演示模式 ----
+demo:
+  allow_ipc_telemetry: true     # 允许网页大屏「演示数据」注入模拟温湿度（只在未连接下位机时生效）；正式部署建议改为 false
+
+# ---- 界面 ----
+ui:
+  wave_fps:             # 海浪动画帧率；留空 = 自动（香橙派等 ARM 设备 10，PC 25）；0 = 静止（最省 CPU）
+  kiosk_size:           # 小屏分辨率；留空 = 自动读取屏幕。PC 上调试小屏可写 [800, 480]
+
+# ---- 温度预测 ----
+world_model:
+  fit_window_s: 60      # 用最近多少秒的温度做拟合
+  boil_low_c: 92        # 沸腾平台的温度范围（水）
+  boil_high_c: 104
+  boil_full_risk_s: 600 # 沸腾持续这么久，风险分记满
+
+# ---- 网页大屏 ----
+web:
+  enabled: true
+  host: 0.0.0.0         # 0.0.0.0 = 局域网内其他电脑也能打开
+  port: 8080
+  token: ""             # 登录口令；留空 = 首次启动自动生成，保存在 runtime/web_token.txt，小屏「设置」页可查看
+  stream_fps: 6         # 网页画面帧率（越低越省 CPU）
+  stream_width: 640
+
+# ---- 安全助手（大模型） ----
+agent:
+  route: auto           # auto = 远程→本地→规则依次尝试；remote / local / off（只用规则模板）
+  auto_review: true     # 出现警告 / 紧急事件时自动生成处理建议
+  min_level: WARNING
+  timeout_s: 20
+  send_images_remote: false   # 是否把事件截图发给远程 API（默认不发，保护隐私）
+  remote:               # 远程 API：默认通义千问（OpenAI 兼容接口）
+    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    api_key_env: DASHSCOPE_API_KEY   # Key 放在这个环境变量里，不要写进本文件
+    model: qwen-plus
+    vision_model: qwen-vl-plus
+  local:                # 本地：电脑上的 Ollama（把 127.0.0.1 换成电脑的局域网 IP）
+    base_url: http://127.0.0.1:11434/v1
+    api_key_env: ""
+    model: qwen2.5:7b
+    vision_model: ""    # 如 qwen2.5vl:7b，留空 = 不看图
+
+# ---- 外部温湿度控制（排风扇 + 加湿片）----
+env:
+  t_set_c: 26           # 环境温度高于它 +1℃ 开始排风
+  h_low: 40             # 湿度低于它 -2% 开始加湿
+  h_high: 70            # 湿度高于它开始排风除湿
+  smoke_fan_raw: 1200   # 烟雾达到该值：排风满速、禁止加湿
+  manual_timeout_s: 600 # 手动控制多久后自动回到自动模式
+
+# ---- 画面异常检测（电脑端 V-JEPA 2，可选）----
+jepa:
+  surprise_threshold: 0 # 异常度（偏离正常画面的标准差倍数）超过它记一条提醒；0 = 只显示不记事件。建议先观察一段时间再填，如 4
+
+# 分层母系统：拓扑（每实验室一路宏观、多路微观）和独立运行状态目录
+hierarchy:
+  topology_file: config/hierarchy.json
+  state_dir: runtime/hierarchy

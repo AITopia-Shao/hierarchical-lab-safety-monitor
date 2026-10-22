@@ -1,0 +1,11 @@
+# 换行符：shell 脚本必须是 LF（CRLF 在开发板上会报错），批处理用 CRLF
+*.sh   text eol=lf
+*.bat  text eol=crlf
+
+# 完整项目包含文档、权重和字体，按二进制保存与比较
+*.pdf binary
+*.docx binary
+*.pptx binary
+*.png binary
+*.ttf binary
+*.pt binary

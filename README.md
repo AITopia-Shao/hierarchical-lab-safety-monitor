@@ -1,0 +1,136 @@
+# 分层视觉协同实验室安全干预监测系统
+
+本仓库是升级项目的完整独立版本，采用 **实验楼母系统 → 多个实验室子系统 → 每实验室 1 路宏观 + N 路微观实验台**。包含完整源码、两份 YOLO 权重、ESP32 固件、原单实验室桌面/小屏/网页功能、文档、演示界面截图和自动化测试。
+
+**快速启动新版：** Mac 双击根目录 `一键启动_macOS.command`；其他电脑安装 `labguard/requirements.txt` 后，在 `labguard/` 执行 `python run_app.py --hierarchy`。默认提供两间实验室、三个实验台的模拟场景。
+
+[分层系统完整操作教程](docs/分层系统升级说明与操作教程.md) · [完整项目目录](PROJECT_CONTENTS.md)
+
+---
+
+湖南涉外经济学院 3 队 · 第 22 届中国大学生计算机设计大赛 · 嵌入式赛道
+
+在化学实验室里，用两个摄像头和几个传感器盯着实验台：人走了还在加热、烧杯快烧干、没戴护目镜、冒烟，**提前提醒**；真到危险时，由下位机**切断加热电源**，恢复供电只能到现场按复位键。
+
+| 实验台小屏 | 网页大屏 |
+|---|---|
+| ![小屏：越过沸点仍在升温，约 14 秒后干烧](docs/上手指南图片/07_小屏_守护页_预测干烧.png) | ![网页大屏总览](docs/上手指南图片/14_大屏_总览_预测干烧.png) |
+
+## 能做什么
+
+- **两路识别**：全景摄像头看人（在不在岗、护目镜 / 手套 / 实验服 / 口罩、饮食、伏案），台面摄像头看器皿（种类、是否靠近桌边）。YOLO11，开发板上用 NPU 推理。
+- **安全规则 R1–R9**：干烧、升温过快、加热时无人值守、烟雾、高湿、高温、量器被加热、预测即将烧干。
+- **温度预测**：沸点以下只预测多久沸腾；越过沸点还在升温，才给出干烧倒计时。只提醒，不参与断电。
+- **断电闭环**：开发板发断电指令，ESP32 下位机执行并回复确认；下位机另有本地硬规则和 30 秒失联保护，开发板死机也能断电。
+- **安全助手**：警告和紧急事件自动生成处理建议，并引用安全手册条款。支持远程通义千问、本地 Ollama 和断网时的规则模板三条线路；助手只能看、不能控制任何设备。
+- **外部温湿度控制**：排风扇和加湿片在下位机本地闭环控制。
+- **画面异常检测（可选）**：电脑端运行 V-JEPA 2，检测台面画面中不符合预期的变化。
+
+## 分层视觉母系统（2026-10-22 新增）
+
+支持 **实验楼 → 多实验室 → 每实验室 1 路宏观 + N 路微观**，每个微观节点可独立配置模型、视频源、温湿度来源。实验室事件经母系统按策略联动其他实验室报警/请求断电，并记录指令、回执、人工确认与重启恢复状态。
+
+- **Mac 双击**：仓库根目录 `一键启动_macOS.command`，首次自动准备独立环境；默认两间实验室、三个实验台的模拟演示。
+- **其他电脑**：在 `labguard/` 执行 `python run_app.py --hierarchy`。
+- 原来的桌面/小屏/网页模式继续按原命令启动；Mac 也可双击 `原单实验室界面_macOS.command`。
+- [分层升级说明与操作教程](docs/分层系统升级说明与操作教程.md)；[分层验证记录](docs/开发记录/2026-10-22_分层系统接入.md)。
+
+当前是单机多节点调度，支持网络摄像头，尚未实现跨主机实验室代理。原有权重没有火焰/烟雾/加热设备类别，真实识别需要接入对应模型；演练明确标注为模拟，不能操作真实执行器。真实断电接口复用本仓库 CRC16 + ACK 协议，实体硬件仍待验证。
+
+![分层母系统联动演示](docs/分层系统图片/02_母系统联动回执.png)
+
+## 仓库结构
+
+```
+├─ labguard/     全部代码（运行、配置、固件、部署、测试都在这里）
+├─ docs/         比赛文档、零基础上手指南、开发记录
+└─ slides/       答辩汇报 PPT
+```
+
+```
+labguard/
+├─ run_app.py            启动入口
+├─ start_windows.bat     Windows 双击启动
+├─ start_linux.sh        Linux 启动
+├─ config.yaml           所有阈值和设置
+├─ requirements.txt      开发板 / 电脑运行依赖
+├─ requirements-host.txt 电脑端可选程序依赖（V-JEPA 2）
+├─ src/
+│   ├─ core/             安全核心：规则、温度预测、事件、环境控制、演示数据
+│   ├─ agent/            安全助手
+│   ├─ web/              网页大屏
+│   ├─ ui/               电脑大窗口、实验台小屏
+│   └─ hardware/         传感器数据来源
+├─ LabSafetyMonitor/     摄像头与识别、下位机通信、字体
+├─ models/               识别模型 ppe_best.pt、chem_best.pt
+├─ knowledge/            安全手册（安全助手检索用）
+├─ firmware/             ESP32 下位机固件
+├─ hub/                  电脑端程序：V-JEPA 2 画面异常检测
+├─ deploy/orangepi/      开发板安装与开机自启
+├─ tools/                串口调试、模型转换、语音生成
+└─ tests/                自动测试
+```
+
+## 快速开始（电脑）
+
+需要 Python 3.10–3.12。推荐用 conda 创建 Python 3.12 环境：
+
+```bash
+cd labguard
+conda env create -f environment.yml
+conda activate lab_safety
+python run_app.py
+```
+
+也可以使用虚拟环境（Windows 用 `py -3.11` 替代 `python3.11`，激活命令为 `.venv\Scripts\activate`）：
+
+```bash
+cd labguard
+python3.11 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python run_app.py
+```
+
+启动后会打开电脑大窗口。网页默认地址为 `http://127.0.0.1:8080`；端口被占用时自动顺延，实际地址见终端或 `labguard/runtime/web_url.txt`。口令会打印在终端里，也保存在 `labguard/runtime/web_token.txt`。启动脚本支持查找 conda 环境和项目内的 `.venv`。
+
+在电脑上查看实验台小屏界面：
+
+```bash
+python run_app.py --mode edge --windowed
+```
+
+运行测试：
+
+```bash
+python -m pip install -r requirements-dev.txt
+python tests/test_backend.py
+python tests/test_platform.py
+python -m unittest discover -s tests -p 'test_*_regressions.py' -v
+python tests/smoke_app.py  # 三种模式启动检查，使用测试图片和本机网络，无需真实硬件
+```
+
+开发板部署见 `labguard/deploy/orangepi/setup.sh`。没有硬件时的演示方法见上手指南第 12 节。
+
+## 文档
+
+- [零基础上手指南](docs/零基础上手指南.md)：给新队员看的入门文档，带截图和流程图
+- [AGENTS.md](AGENTS.md)：给 AI 助手看的项目说明。把仓库交给 AI 提问时，让它先读这份文件，不用通读全部代码
+- [开发记录](docs/开发记录/)：代码审查、修改说明与落地计划（含采购清单）、工作交接
+- 比赛提交的设计文档在 `docs/` 下（docx / pdf）
+
+## 安全设计原则
+
+- 软件只能断电，不能通电。程序里没有任何通电接口，恢复供电只能到现场按复位键。
+- 安全助手和画面异常检测只给建议，不参与断电决策。
+- 下位机本地规则独立于开发板运行，是最后一道防线。
+- API Key 只放在环境变量里，不写进配置文件，也不提交到仓库。
+
+## 版本记录
+
+| 标签 | 内容 |
+|---|---|
+| `v1-prototype` | 最初上传的原型版本 |
+| `v2-before-restructure` | 整理目录结构之前的完整版本 |
+
+查看旧版本：`git checkout v1-prototype`；回到最新：`git checkout main`。
